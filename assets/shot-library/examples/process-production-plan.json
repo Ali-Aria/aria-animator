@@ -1,0 +1,44 @@
+{
+  "purpose": "静音验证素材的动作计划；正式制作将时间锚点替换为已确认配音的实测时间",
+  "motionProfile": "process",
+  "timingSeconds": {"entry": 0.4, "exit": 0.3, "stagger": 0.05},
+  "audio": {"voice": null, "music": null, "sfx": null, "status": "silent-validation"},
+  "techniqueReel": {
+    "composition": "MotionTechniqueReel30",
+    "durationSeconds": 15,
+    "localProfile": "impact",
+    "actions": [
+      {"actor": "statement", "start": 0.1, "end": 0.75, "action": "两行文字按不同方向遮罩落位"},
+      {"actor": "tiles", "start": 2.85, "end": 4.772, "action": "中心错峰进入后圆角变形成圆"},
+      {"actor": "cards", "start": 6.3, "end": 8.15, "action": "独立透视入场，数字、柱形与描边错峰响应"},
+      {"actor": "mark", "start": 9.3, "end": 10.5, "action": "SVG 描边与文字接入缩放转场"},
+      {"actor": "conclusion", "start": 12.5, "end": 13.15, "action": "滑移接续后留出结论阅读"}
+    ],
+    "freezeSeconds": 14
+  },
+  "causalProcess": {
+    "composition": "CausalProcessFixture30",
+    "durationSeconds": 25,
+    "worldOwner": "causal-process",
+    "persistentActors": ["input-bundle", "document-0", "document-1", "document-2", "document-3", "document-4"],
+    "events": [
+      {"actor": "documents", "start": 0.15, "end": 2.35, "action": "5 个输入依次进入共享画布"},
+      {"actor": "input-bundle", "start": 4.85, "end": 5.55, "action": "同一资料束进入筛选区域并触发接收方反馈"},
+      {"actor": "documents", "start": 5.8, "end": 10.4, "action": "输入逐项通过条件筛选，保留 3 项并移开 2 项"},
+      {"actor": "input-bundle", "start": 12.15, "end": 12.85, "action": "同一资料束进入结果区域"},
+      {"actor": "accepted-documents", "start": 13, "end": 15.05, "action": "已保留的原主体继续传递，随后显示确认结果"}
+    ],
+    "readingWindows": [
+      {"start": 2.35, "end": 4.8, "task": "辨认 5 个输入及其后续条件分组"},
+      {"start": 16.5, "end": 20.5, "task": "读取完整固定的示意检验记录，核对 5 项输入与 3 项保留", "evidenceFit": "contain", "fixed": true},
+      {"start": 21.4, "end": 25, "task": "检查最终三个主体与 5→3 的结果，并阅读接续结论"}
+    ],
+    "freezeSeconds": 24
+  },
+  "productionBeatExample": {
+    "motionProfile": "process",
+    "timingSeconds": {"entry": 0.4, "action": 0.6, "hold": 1.2, "phases": {"timeline": {"start": 3.5, "duration": 0.4}}},
+    "visual": {"composition": "UiAeCardSwarmTimeline", "props": {"brand": "工作台", "title": "输入进入编辑流程", "cardLabels": ["资料", "任务", "结果"]}},
+    "note": "这些字段追加到已有 TimelineBeat，保留原帧字段；lifecycle 中的显式帧值仍优先"
+  }
+}

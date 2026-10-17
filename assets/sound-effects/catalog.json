@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "source": "代码独立合成",
+  "seed": 20261010,
+  "sample_rate": 48000,
+  "channels": 2,
+  "bit_depth": 16,
+  "method": "Original procedural synthesis: oscillators, seeded filtered noise, envelopes and early reflections.",
+  "license": "CC0-1.0",
+  "samples": [
+    {
+      "id": "soft-click",
+      "file": "01-soft-click.wav",
+      "title": "轻点击",
+      "usage": "按钮触发、选中反馈",
+      "duration_seconds": 0.45,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.0,
+      "sha256": "f1240dc3ea4ef88b5d840644663abda261b955f33f235047db9427eeecf7e24f"
+    },
+    {
+      "id": "soft-pop",
+      "file": "02-soft-pop.wav",
+      "title": "柔和弹出",
+      "usage": "气泡、卡片出现、节点展开",
+      "duration_seconds": 0.6,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.11,
+      "sha256": "cdcccba7a1114dc8267ca35d1b558d24105d118fe133f48627f2f94c0df7fcf1"
+    },
+    {
+      "id": "air-whoosh",
+      "file": "03-air-whoosh.wav",
+      "title": "轻扫动",
+      "usage": "主体移动、镜头接续",
+      "duration_seconds": 0.91,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.0,
+      "sha256": "cc83cd4bdc80ce766da2681816b2206ad01e45a0a9c43f0f42c98996381e5d38"
+    },
+    {
+      "id": "glass-confirm",
+      "file": "04-glass-confirm.wav",
+      "title": "玻璃确认",
+      "usage": "完成、成功、结果揭示",
+      "duration_seconds": 1.48,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.0,
+      "sha256": "ed3f5791e857d7d2307c0a90608c7444170d719dc074ef126136c3e702d77274"
+    },
+    {
+      "id": "low-impact",
+      "file": "05-low-impact.wav",
+      "title": "低频落位",
+      "usage": "部件组装、碰撞、结构落稳",
+      "duration_seconds": 0.95,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.0,
+      "sha256": "cd63cf9f15b22c51f602a4124926d02e45636c56a0481dab6b968825bf9241c1"
+    },
+    {
+      "id": "digital-transfer",
+      "file": "06-digital-transfer.wav",
+      "title": "数字传输",
+      "usage": "信息流、计算、数据接力",
+      "duration_seconds": 1.05,
+      "onset_offset_seconds": 0.08,
+      "sample_peak_dbfs": -12.0,
+      "sha256": "c7191d015d19cc489dd8d280fdd30e2a1be1f5c83b2e1f0429d6eec8b7bdde73"
+    }
+  ]
+}

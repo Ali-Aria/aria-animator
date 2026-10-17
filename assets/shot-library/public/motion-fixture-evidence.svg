@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="810" viewBox="0 0 1440 810">
+<rect width="1440" height="810" fill="#fffdf7"/><rect x="35" y="35" width="1370" height="740" rx="24" fill="none" stroke="#33402b" stroke-width="3"/>
+<g font-family="Microsoft YaHei, Segoe UI, sans-serif" fill="#161814"><text x="110" y="150" font-size="54" font-weight="700">检验记录（示意数据）</text><text x="110" y="230" font-size="30">同一组 5 项输入，依据有效性保留 3 项。</text>
+<text x="110" y="345" font-size="36">输入项</text><text x="600" y="345" font-size="36">条件</text><text x="1000" y="345" font-size="36">结果</text>
+<text x="110" y="430" font-size="32">1、3、4</text><text x="600" y="430" font-size="32">有效</text><text x="1000" y="430" font-size="32">保留</text>
+<text x="110" y="530" font-size="32">2、5</text><text x="600" y="530" font-size="32">无效</text><text x="1000" y="530" font-size="32">移除</text>
+<text x="110" y="660" font-size="32">核对内容：主体身份、筛选条件、输出数量。</text></g><path d="M110 365 H1320 M110 470 H1320 M110 570 H1320" stroke="#cdd5c7" stroke-width="2"/>
+</svg>

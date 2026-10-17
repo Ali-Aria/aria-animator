@@ -1,0 +1,123 @@
+# 动态图解工坊
+
+`motion-explainer-studio` 是一个动画讲解制作 Skill。它把主题、资料或定稿制作成可编辑的视频，涵盖口播写作、配音、画面编排、音效和导出。
+
+默认使用 React 与 Remotion 制作白底 2D 动画，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
+
+## 运行环境
+
+使用前准备以下工具。具体依赖版本和项目配置见 [共享库与项目依赖](references/shared-dependencies.md)。
+
+| 工具 | 用途 |
+| --- | --- |
+| 支持 Skill 和本地命令的 AI 助手 | 读取制作规则，编写并执行项目代码。 |
+| Python 3.10 或以上版本 | 初始化配置、下载字体和调用配音接口。上述脚本只使用标准库。 |
+| Node.js 22.18.0 或以上版本与 npm | 推荐 Node.js 24。安装项目依赖，运行 Remotion 和原生 TypeScript 动作测试。 |
+| Chromium 或 Chrome | 预览和渲染视频。 |
+| FFmpeg 与 ffprobe | 处理音频、检查视频参数。需能从命令行调用。 |
+
+镜头库的部分检查脚本还需要 Pillow 和 `jsonschema`，使用对应检查时再准备。
+
+## 安装与首次配置
+
+### 让 AI 助手安装
+
+把本仓库的 GitHub 链接发给支持本地命令和 Skill 的 AI 助手，可以这样说：
+
+```text
+请从这个仓库安装 motion-explainer-studio（动态图解工坊）：
+<这个仓库的 GitHub 链接>
+先阅读仓库根目录的 AGENTS.md，按我的 AI 宿主完成安装和首次配置引导。
+安装后告诉我 Skill、共享库和配音配置分别保存在哪里。
+```
+
+[AI Agent 安装指南](AGENTS.md) 包含目录识别、安装、初始化和检查步骤。配音音色和 API Key 由你在本机填写，初始化时会给出文件位置与配置链接。
+
+### 手动安装
+
+将完整的 `motion-explainer-studio` 文件夹放到 AI 助手支持的 skills 目录。先按 [Python 命令识别](references/first-use.md#识别-python-命令) 确认可用的 Python 3.10 或以上版本。
+
+以下示例中的 `python` 表示已确认的解释器命令。只有 `python3` 的系统请替换为 `python3`；Windows 使用 Python 启动器时替换为 `py -3`。后续命令沿用同一解释器。在 Skill 文件夹中运行：
+
+```sh
+python scripts/setup.py --install-fonts
+```
+
+脚本会创建共享库，并展示 Skill、共享库、配音配置和字体的实际位置。支持安装后执行的助手可在安装完成时运行；其他助手在第一次调用 Skill 时执行。
+
+| 目录 | 保存内容 |
+| --- | --- |
+| Skill 安装目录 | 制作规则、工具脚本、镜头源码和预览视频。 |
+| 用户主目录下的 `.motion-explainer-studio/shared` | 个人配音配置、发音规则、字体和缓存。更新 Skill 时保留此目录。 |
+
+共享库可以通过环境变量 `MOTION_EXPLAINER_SHARED` 或脚本参数 `--shared-root` 指定。各脚本应使用同一个位置。详细步骤见 [首次使用引导](references/first-use.md)。
+
+### 填写豆包配音配置
+
+配音固定使用 `doubao-seed-tts-2-0`，对应豆包语音合成 2.0 的系统音色。初始化后，打开脚本展示的 `config/tts.json`，填写以下两项：
+
+| 字段 | 填写内容 |
+| --- | --- |
+| `voice_id` | 语音合成 2.0 的系统音色 ID。 |
+| `api_key` | 你在豆包语音控制台创建的 API Key。 |
+
+这两项初始值为空，由你自行填写。
+
+- [豆包语音控制台](https://console.volcengine.com/speech)：开通所需服务。
+- [API Key 管理](https://console.volcengine.com/speech/new/setting/apikeys?projectName=default)：创建密钥。
+- [官方音色列表](https://www.volcengine.com/docs/6561/1257544)：选择“豆包语音合成模型 2.0”的系统音色。
+- [API Key 使用说明](https://docs.volcengine.com/docs/DoubaoVoice/APIKeyUsage?lang=zh)：查看鉴权方式。
+
+填写后，在 Skill 目录重新运行：
+
+```sh
+python scripts/setup.py
+```
+
+脚本检查配置格式，并展示保存位置，只报告 Key 是否已填写。服务权限和音色是否可用，需要通过实际合成验证。
+
+提供成品配音时，可以跳过合成配置。发音规则、音频参数和合成命令见 [豆包配音](references/doubao-tts.md)。
+
+### 准备字体与视频项目
+
+初始化会从 [LxgwWenKai 官方 GitHub](https://github.com/lxgw/LxgwWenKai) 下载霞鹜文楷，核对文件校验值，并保留字体许可证。字体保存到共享库，供多个项目复用。
+
+确定视频项目目录后，在 Skill 目录运行以下命令，将占位路径替换成实际位置：
+
+```sh
+python scripts/setup.py --project "<项目目录>"
+```
+
+命令会把字体和加载组件复制到项目。按 [字体接入](references/fonts.md) 在视频根组件加载字体。渲染时从项目本地读取字体。
+
+每个视频项目默认使用自己的 JavaScript 依赖。安装方法见 [共享库与项目依赖](references/shared-dependencies.md)。
+
+## 制作第一个视频
+
+引用 Skill，提供主题、文本或图片材料，再说“帮我做视频”即可。例如：
+
+```text
+使用 $motion-explainer-studio，根据这些材料帮我做个视频。
+```
+
+也可以只给一个主题，例如“帮我做个解释 DNS 原理的视频”。已有定稿或音频时直接附上；有时长、画幅或风格偏好时再补充。
+
+AI 会按 Skill 的默认流程写口播、使用已配置的配音和字体，并安排画面与音效。首次使用缺少配置时，AI 会引导你完成。
+
+默认有两次确认：先检查口播稿，确认后开始合成配音和制作视频；再检查完整低清预览，确认后渲染正式版。低清预览包含完整时间线、配音、启用的字幕和音效，16:9 默认使用 960×540。
+
+你也可以明确跳过某一步，例如“口播不用审核，直接配音制作”或“不用预览，直接渲染正式版”。若希望全程由 AI 完成，可以说“全程不用确认，直接做成片”。已经确认的同一版本无需重复确认。
+
+交付内容包括视频、最终配音、使用的字幕、全片关键帧缩略图、检查记录和简短的可复用组件清单。项目保留可编辑源码与素材。需要项目压缩包时，在任务中说明。检查方法见 [制作检查](references/production-and-qc.md)。
+
+## 查看镜头示例
+
+可以从 [镜头目录](assets/shot-library/shot-library.json) 查找可复用的镜头，也可下载后打开 [预览页面](assets/shot-library/review.html) 查看动作效果。示例用于参考构图、动作和接续方式，实际视频按你的内容重新编排。
+
+## 来源与许可证
+
+本 Skill 基于 [vibe-motion/remotion-code-motion-explainer](https://github.com/vibe-motion/remotion-code-motion-explainer) 修改。原项目由 [Bingo](https://github.com/DWCD-Bingo) 创建。
+
+动态图解工坊增加了首次使用引导、独立共享配置、豆包语音合成 2.0 接入、霞鹜文楷加载和内置中文口播写作，并调整了制作流程和交付规则。
+
+原项目采用 [MIT 许可证](LICENSE)。镜头库来源见 [SOURCES.md](assets/shot-library/SOURCES.md)。霞鹜文楷使用 SIL Open Font License（OFL）1.1，下载和复制字体时一并保留许可证。随附 Three.js 源码保留其 MIT 许可证。

@@ -1,0 +1,33 @@
+# Installed dependencies and local environments
+node_modules/
+.venv/
+venv/
+
+# User credentials and shared settings
+.env
+.env.*
+config/tts.json
+**/config/tts.json
+.motion-explainer-studio/
+
+# Generated checks, caches and builds
+qc/
+__pycache__/
+*.py[cod]
+.cache/
+.pytest_cache/
+*.tsbuildinfo
+*.log
+build/
+dist/
+out/
+_validation/
+
+# Historical machine-specific reports; keep source, tests and preview videos
+/assets/three-shader-starter/validation.json
+/assets/three-shader-starter/motion-validation.json
+/assets/three-shader-starter/organization-validation.json
+
+# OS metadata
+.DS_Store
+Thumbs.db

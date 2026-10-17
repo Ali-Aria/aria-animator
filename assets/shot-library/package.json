@@ -1,0 +1,33 @@
+{
+  "name": "code-motion-shot-library",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "render:previews": "node scripts/run-python.cjs scripts/render_previews.py",
+    "validate:shots": "node scripts/run-python.cjs scripts/validate_shots.py",
+    "test:bundle": "remotion compositions src/index.ts",
+    "test:motion": "node --test tests/motion-runtime.test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/captions": "4.0.526",
+    "@remotion/cli": "4.0.526",
+    "@remotion/effects": "4.0.526",
+    "@remotion/media": "4.0.526",
+    "@remotion/motion-blur": "4.0.526",
+    "@remotion/zod-types": "4.0.526",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.526",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "7.0.2"
+  }
+}

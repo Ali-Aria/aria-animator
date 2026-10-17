@@ -1,0 +1,8 @@
+{
+  "model": "doubao-seed-tts-2-0",
+  "voice_id": "",
+  "api_key": "",
+  "sample_rate": 24000,
+  "speech_rate": 0,
+  "loudness_rate": 0
+}

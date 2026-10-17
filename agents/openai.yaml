@@ -1,0 +1,4 @@
+interface:
+  display_name: "动态图解工坊"
+  short_description: "内置口播写作与首次配置引导，使用豆包配音、霞鹜文楷和 Remotion 制作动态讲解"
+  default_prompt: "使用 $motion-explainer-studio，根据我提供的主题或材料帮我做个视频。"
