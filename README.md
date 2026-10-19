@@ -4,6 +4,20 @@
 
 默认使用 React 与 Remotion 制作白底 2D 动画，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
 
+## 默认制作方式
+
+口播和画面在配音前分配信息。口播讲清因果、判断和必要条件；画面展示名称、数值、位置、对照和操作细节，并留出阅读时间。稿外交代核查过程和次要待核项，正文保留有依据的适用条件，交稿前逐句清理空泛的免责和重复说明。
+
+| 项目 | 默认规则 |
+| --- | --- |
+| 动作与镜头 | 使用 `process` 节奏，主体错峰响应，结果接入下一步。镜头按传递关系和关注点跟随，证据落稳后保持可读。 |
+| 配色 | 全片或同组交付选用青瓷蓝、椰林绿、编辑部红或石墨青中的一套。默认画布为白色，真实界面和证据保留必要的原色。 |
+| 字体 | 标题、标签和字幕使用霞鹜文楷真实 Medium 500；次要长说明可用 Regular 400。加载组件默认禁用合成字重。 |
+| 轮廓 | 以 1080p 落稳画面为基准，主体 8 px、连线 6 px、辅助细节 4 px。检查局部缩放、镜头缩放和预览缩小后的可见粗细。 |
+| 声音 | 使用已配置的豆包配音，或原样使用用户指定的成品配音。按可见事件安排音效，不增加背景音乐或额外旁白。 |
+
+仅修改画面时，复用已确认的配音和实测时间。口播、发音、语速或有语义作用的停顿变化时，重做配音和时间校准。
+
 ## 运行环境
 
 使用前准备以下工具。具体依赖版本和项目配置见 [共享库与项目依赖](references/shared-dependencies.md)。
@@ -26,12 +40,12 @@
 
 ```text
 请从这个仓库安装 motion-explainer-studio（动态图解工坊）：
-<这个仓库的 GitHub 链接>
+https://github.com/Ali-Aria/motion-explainer-studio
 先阅读仓库根目录的 AGENTS.md，按我的 AI 宿主完成安装和首次配置引导。
 安装后告诉我 Skill、共享库和配音配置分别保存在哪里。
 ```
 
-[AI Agent 安装指南](AGENTS.md) 包含目录识别、安装、初始化和检查步骤。配音音色和 API Key 由你在本机填写，初始化时会给出文件位置与配置链接。
+[AI Agent 使用指南](AGENTS.md) 包含目录识别、安装、初始化和检查步骤。安装请求只完成安装与首次配置引导。配音音色和 API Key 由你在本机填写，初始化时会给出文件位置与配置链接。
 
 ### 手动安装
 
@@ -88,7 +102,9 @@ python scripts/setup.py
 python scripts/setup.py --project "<项目目录>"
 ```
 
-命令会把字体和加载组件复制到项目。按 [字体接入](references/fonts.md) 在视频根组件加载字体。渲染时从项目本地读取字体。
+命令会把 Regular、Medium 字体、许可证和加载组件复制到项目。按 [字体接入](references/fonts.md) 在视频根组件加载字体，等待字体就绪后再渲染。渲染时从项目本地读取字体。
+
+已有项目中的字体或加载组件与当前版本不同时，脚本会保留原文件并报出冲突路径。核对后按项目需要合并，避免覆盖已有修改。
 
 每个视频项目默认使用自己的 JavaScript 依赖。安装方法见 [共享库与项目依赖](references/shared-dependencies.md)。
 
@@ -97,7 +113,7 @@ python scripts/setup.py --project "<项目目录>"
 引用 Skill，提供主题、文本或图片材料，再说“帮我做视频”即可。例如：
 
 ```text
-使用 $motion-explainer-studio，根据这些材料帮我做个视频。
+使用 motion-explainer-studio（动态图解工坊），根据这些材料帮我做个视频。
 ```
 
 也可以只给一个主题，例如“帮我做个解释 DNS 原理的视频”。已有定稿或音频时直接附上；有时长、画幅或风格偏好时再补充。
@@ -108,16 +124,29 @@ AI 会按 Skill 的默认流程写口播、使用已配置的配音和字体，�
 
 你也可以明确跳过某一步，例如“口播不用审核，直接配音制作”或“不用预览，直接渲染正式版”。若希望全程由 AI 完成，可以说“全程不用确认，直接做成片”。已经确认的同一版本无需重复确认。
 
-交付内容包括视频、最终配音、使用的字幕、全片关键帧缩略图、检查记录和简短的可复用组件清单。项目保留可编辑源码与素材。需要项目压缩包时，在任务中说明。检查方法见 [制作检查](references/production-and-qc.md)。
+交付内容包括视频、最终配音、使用的字幕、全片关键帧缩略图、检查记录和简短的可复用组件清单。使用音效时另交付独立音效轨，最终配音源文件保留为纯配音。项目保留可编辑源码与素材。需要项目压缩包时，在任务中说明。
+
+检查覆盖静帧、连续动作、跨段镜头、字体字重和缩放后的线宽。关闭口播字幕时，画面中的必要标签、数值和操作仍须可辨；只听配音时，主线和必要条件仍须清楚。检查记录保存在 `qc/workflow-evidence.json`，问题、修复和复查保存在 `qc/production-learning.json`。方法见 [制作检查](references/production-and-qc.md)。
 
 ## 查看镜头示例
 
 可以从 [镜头目录](assets/shot-library/shot-library.json) 查找可复用的镜头，也可下载后打开 [预览页面](assets/shot-library/review.html) 查看动作效果。示例用于参考构图、动作和接续方式，实际视频按你的内容重新编排。
 
+## 制作规则索引
+
+| 任务 | 文档 |
+| --- | --- |
+| 安装和配置 | [Agent 使用指南](AGENTS.md)、[首次使用引导](references/first-use.md)、[共享库与项目依赖](references/shared-dependencies.md) |
+| 写稿和安排信息 | [口播与画面信息分工](references/information-design.md)、[口播写作](references/voiceover-writing.md) |
+| 接入配音和音效 | [豆包配音](references/doubao-tts.md)、[音效设计与接入](references/sound-effects.md) |
+| 设计画面 | [视觉设计](references/code-motion-design.md)、[配色规则](references/color-presets.md)、[字体接入](references/fonts.md) |
+| 实现动态过程 | [process 制作与接入](references/process-production.md)、[动作编排](references/motion-production-patterns.md)、[连续运动](references/continuous-motion.md) |
+| 确认和交付 | [口播与预览确认](references/review-checkpoints.md)、[制作检查](references/production-and-qc.md) |
+
 ## 来源与许可证
 
 本 Skill 基于 [vibe-motion/remotion-code-motion-explainer](https://github.com/vibe-motion/remotion-code-motion-explainer) 修改。原项目由 [Bingo](https://github.com/DWCD-Bingo) 创建。
 
-动态图解工坊增加了首次使用引导、独立共享配置、豆包语音合成 2.0 接入、霞鹜文楷加载和内置中文口播写作，并调整了制作流程和交付规则。
+动态图解工坊增加了首次使用引导、独立共享配置、豆包语音合成 2.0 接入、霞鹜文楷加载和内置中文口播写作。制作规则包含口播与画面的信息分工、统一字重与轮廓线宽，以及口播、预览两次确认和检查记录。
 
 原项目采用 [MIT 许可证](LICENSE)。镜头库来源见 [SOURCES.md](assets/shot-library/SOURCES.md)。霞鹜文楷使用 SIL Open Font License（OFL）1.1，下载和复制字体时一并保留许可证。随附 Three.js 源码保留其 MIT 许可证。

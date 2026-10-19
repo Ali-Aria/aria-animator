@@ -99,11 +99,18 @@ non-text evidence.
   must still carry meaning when color is removed.
 - In authored motion graphics, `HERO` is one focal element per beat or chart. Do not use it as a
   general decoration or as a second equal category.
-- The color version of a hairline uses `strokeScale: 1.8` and `opacityFloor: .85`; `dot heat` is
-  the only opacity exception because its density is the data.
+- All four palettes use the shared subject, connector and detail stroke widths in
+  [Visual design](code-motion-design.md#统一轮廓线宽). Check visible widths after local scaling, camera
+  scaling and preview downscaling. Do not apply the legacy `strokeScale: 1.8` multiplier.
+  Colored structural strokes keep `opacityFloor: .85`; `dot heat` is the opacity exception because
+  its density is the data.
 - Use the darker text family for readable labels. Pale ramp colors are fills or low-emphasis
   shapes, not small text.
 - For dark cards, use the preset's `dark` block. Do not synthesize a neon or gradient variant.
+
+Typography is independent of palette. New videos use LXGW WenKai with real Medium 500 for titles,
+labels and captions, and optional Regular 400 for secondary long explanations. Follow
+[Font integration](fonts.md#主要字体与字重) for font files, registration and synthesis settings.
 
 ## Porcelain · 青瓷蓝
 

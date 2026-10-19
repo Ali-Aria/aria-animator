@@ -20,5 +20,5 @@ export const LxgwFont: React.FC<React.PropsWithChildren> = ({children}) => {
   useEffect(() => {
     loadFonts().then(() => continueRender(handle)).catch((error) => cancelRender(error));
   }, [handle]);
-  return <AbsoluteFill style={{fontFamily: '"LXGW WenKai", sans-serif', fontWeight: 400}}>{children}</AbsoluteFill>;
+  return <AbsoluteFill style={{fontFamily: '"LXGW WenKai", sans-serif', fontWeight: 500, fontSynthesis: 'none'}}>{children}</AbsoluteFill>;
 };
