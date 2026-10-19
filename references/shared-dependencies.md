@@ -2,10 +2,10 @@
 
 ## 共享库保存什么
 
-共享库位置由 [首次使用引导](first-use.md) 解析并展示，默认是用户主目录下的 `.motion-explainer-studio/shared`。它保存跨项目复用的设置与素材：
+共享库位置由用户在 [首次使用引导](first-use.md) 中选择成品保存目录后确定。共享库使用该目录下的 `_shared`，与各视频文件夹并列。它保存跨项目复用的设置与素材：
 
 ```text
-shared/
+_shared/
 ├── config/tts.json
 ├── tts/pronunciations.json
 ├── fonts/LxgwWenKai/
@@ -14,9 +14,11 @@ shared/
 
 `tts.json` 保存用户音色与 Key。项目只保存合成音频和必要的非敏感参数，不复制此文件。字体从共享库复制到项目，保证项目交付后仍能加载。更新 Skill 时保留共享库。
 
+用户主目录下的 `.motion-explainer-studio/locations.json` 只记录成品保存目录，不含配音凭证。脚本按显式 `--shared-root`、`MOTION_EXPLAINER_SHARED`、已记录目录的 `_shared`、旧版默认目录的顺序解析共享库。旧版默认目录只用于兼容，首次初始化必须先选择保存位置；新安装不自动在用户主目录创建共享库。切换记录不会迁移旧配置。
+
 ## 项目运行环境
 
-每个新项目默认使用自己的 `package.json`、锁文件与 `node_modules`。在用户指定的项目目录准备依赖，不要求固定盘符或额外的建项目脚本。
+每个新项目默认使用自己的 `package.json`、锁文件与 `node_modules`。在所选成品保存目录下为本片建立独立文件夹，与 `_shared` 并列；维护已有项目时复用原位置。文件布局和路径展示按首次引导执行，不要求固定盘符或额外的建项目脚本。
 
 Node.js 最低版本为 22.18.0，推荐使用 Node.js 24。先检查 `node --version` 和 `npm --version`。动作测试直接导入 `.ts` 文件，需要 Node.js 原生类型移除支持；低版本先升级再运行。镜头库的 `package.json` 已声明 `engines.node`，npm 默认可能只警告，不能据此跳过版本检查。
 

@@ -29,6 +29,12 @@ class DistributionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
+        home = patch.object(Path, "home", return_value=Path(self.temp.name))
+        home.start()
+        self.addCleanup(home.stop)
+        environment = patch.dict("os.environ", {}, clear=True)
+        environment.start()
+        self.addCleanup(environment.stop)
         self.root = Path(self.temp.name) / "shared"
         config.initialize(self.root)
 
@@ -71,6 +77,100 @@ class DistributionTests(unittest.TestCase):
             self.assertEqual(config.shared_root(), self.root.resolve())
             explicit = self.root / "override"
             self.assertEqual(config.shared_root(explicit), explicit.resolve())
+
+    def test_workspace_choice_is_reused_with_sibling_shared_library(self):
+        workspace = Path(self.temp.name) / "my videos"
+        config.save_workspace(workspace)
+        root = workspace / "_shared"
+        self.assertEqual(config.workspace_root(), workspace.resolve())
+        self.assertEqual(config.shared_root(), root.resolve())
+        config.initialize(root)
+        self.assertEqual(config.public_status(root)["workspace_root"], str(workspace.resolve()))
+        self.assertEqual(json.loads(config.locations_path().read_text(encoding="utf-8")),
+                         {"workspace_root": str(workspace.resolve())})
+        with patch.dict("os.environ", {"MOTION_EXPLAINER_SHARED": str(self.root)}):
+            self.assertEqual(config.shared_root(), self.root.resolve())
+            self.assertIsNone(config.public_status(self.root)["workspace_root"])
+            self.assertEqual(config.shared_root(root), root.resolve())
+
+    def test_first_setup_requires_directory_choice_before_writing(self):
+        with patch.object(sys, "argv", ["setup.py", "--install-fonts"]), patch.object(setup, "download") as download:
+            with self.assertRaisesRegex(ValueError, "选择成品保存目录"):
+                setup.main()
+            download.assert_not_called()
+        self.assertFalse((Path.home() / ".motion-explainer-studio").exists())
+
+    def test_setup_remembers_choice_without_creating_video_projects(self):
+        workspace = Path(self.temp.name) / "video output"
+        stdout = io.StringIO()
+        with patch.object(sys, "argv", ["setup.py", "--workspace-root", str(workspace)]), contextlib.redirect_stdout(stdout):
+            setup.main()
+        status = json.loads(stdout.getvalue())
+        self.assertEqual(status["workspace_root"], str(workspace.resolve()))
+        self.assertEqual(list(workspace.iterdir()), [workspace / "_shared"])
+        path = workspace / "_shared/config/tts.json"
+        settings = json.loads(path.read_text(encoding="utf-8"))
+        settings.update(api_key="offline-private-key", voice_id="test-voice")
+        path.write_text(json.dumps(settings), encoding="utf-8")
+        before = path.read_bytes()
+        stdout = io.StringIO()
+        with patch.object(sys, "argv", ["setup.py"]), contextlib.redirect_stdout(stdout):
+            setup.main()
+        self.assertEqual(path.read_bytes(), before)
+        self.assertNotIn("offline-private-key", stdout.getvalue())
+        self.assertNotIn("offline-private-key", config.locations_path().read_text(encoding="utf-8"))
+
+    def test_invalid_location_record_does_not_fall_back_to_another_library(self):
+        path = config.locations_path()
+        path.parent.mkdir(parents=True)
+        for content in ('{broken', '{"workspace_root": "relative/path"}', '[]'):
+            path.write_text(content, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "保存目录记录无效"):
+                config.shared_root()
+        self.assertEqual(config.shared_root(self.root), self.root.resolve())
+
+    def test_existing_legacy_library_is_reused_without_migration(self):
+        legacy = Path.home() / ".motion-explainer-studio/shared"
+        config.initialize(legacy)
+        before = config.config_path(legacy).read_bytes()
+        stdout = io.StringIO()
+        with patch.object(sys, "argv", ["setup.py"]), contextlib.redirect_stdout(stdout):
+            setup.main()
+        self.assertEqual(config.config_path(legacy).read_bytes(), before)
+        self.assertIsNone(json.loads(stdout.getvalue())["workspace_root"])
+        self.assertFalse(config.locations_path().exists())
+
+    def test_tts_uses_saved_directory_without_an_explicit_override(self):
+        workspace = Path(self.temp.name) / "saved videos"
+        config.save_workspace(workspace)
+        root = config.shared_root()
+        config.initialize(root)
+        settings = config.load_config(root, require_credentials=False)
+        settings.update(api_key="offline-test-secret", voice_id="test-system-voice")
+        config.config_path(root).write_text(json.dumps(settings), encoding="utf-8")
+        source = Path(self.temp.name) / "voiceover.txt"
+        source.write_text("测试。", encoding="utf-8")
+        output = workspace / "test-video/public/audio/voiceover.wav"
+        stdout = io.StringIO()
+        argv = ["synthesize_doubao.py", "--input", str(source), "--output", str(output), "--dry-run"]
+        with patch.object(sys, "argv", argv), patch.object(tts.urllib.request, "build_opener") as network, contextlib.redirect_stdout(stdout):
+            tts.main()
+            network.assert_not_called()
+        self.assertEqual(json.loads(stdout.getvalue())["config_path"], str(config.config_path(root)))
+        self.assertNotIn("offline-test-secret", stdout.getvalue())
+        self.assertFalse(output.exists())
+
+    def test_conflicting_directory_options_do_not_create_files(self):
+        workspace = Path(self.temp.name) / "not created"
+        with patch.object(sys, "argv", ["setup.py", "--workspace-root", str(workspace), "--shared-root", str(self.root)]):
+            with self.assertRaisesRegex(ValueError, "不能同时使用"):
+                setup.main()
+        with patch.dict("os.environ", {"MOTION_EXPLAINER_SHARED": str(self.root)}):
+            with patch.object(sys, "argv", ["setup.py", "--workspace-root", str(workspace)]):
+                with self.assertRaisesRegex(ValueError, "不一致"):
+                    setup.main()
+        self.assertFalse(workspace.exists())
+        self.assertFalse(config.locations_path().exists())
 
     def test_protocol_model_mapping_and_key_placement(self):
         request = tts.build_request("测试", self.configured())

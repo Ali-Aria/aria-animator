@@ -4,6 +4,8 @@
 
 ## 保存制作证据
 
+文件归档遵循 [首次使用引导](first-use.md#首次项目检查)。新项目与 `_shared` 并列，完整低清预览放在本片项目的 `previews/`，正式成片及导出的独立音效轨放在 `renders/`。已有项目复用原布局。交付时展示项目、预览和正式成片的完整绝对路径，不能只用链接标题隐藏保存位置。
+
 计划保存在 `src/data/choreography-plan.json`，代表静帧和全时间线联系表放在 `qc/`。
 `qc/workflow-evidence.json` 记录验证结果；`qc/production-learning.json` 记录问题、原因、修复和复查。
 保留源素材、最终配音、实测时间和使用的字幕。规划中的暂定时间须注明。

@@ -2,13 +2,15 @@
 
 ## 安装到共享库
 
-默认使用 [lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai) 的霞鹜文楷。运行：
+默认使用 [lxgw/LxgwWenKai](https://github.com/lxgw/LxgwWenKai) 的霞鹜文楷。先按 [首次使用引导](first-use.md) 解释目录用途，让用户选择成品保存目录。首次安装运行：
 
 ```text
-python "<skill目录>/scripts/setup.py" --install-fonts
+python "<skill目录>/scripts/setup.py" --workspace-root "<用户选择的成品保存目录>" --install-fonts
 ```
 
 脚本从官方 GitHub Release 下载 `v1.522` 的 Regular 和 Medium 字体，核对固定 SHA-256，并保存 OFL 许可证及来源记录。字体位于 `<共享库>/fonts/LxgwWenKai`，供各项目复用，无需系统管理员权限或系统字体安装。
+
+共享库为所选目录下的 `_shared`。已记录保存目录后，重装或检查字体可直接运行 `setup.py --install-fonts`，自动复用同一位置。
 
 已有文件校验通过时直接复用。网络失败时报告下载失败与共享路径，不能声称安装完成或悄悄换字体。可按脚本中固定版本的链接手动下载到同一目录，再运行检查。
 

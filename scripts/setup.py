@@ -4,12 +4,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
 import urllib.request
 
-from shared_config import initialize, public_status, shared_root, SKILL_ROOT
+from shared_config import config_path, initialize, public_status, save_workspace, shared_root, workspace_root, SKILL_ROOT
 
 FONT_TAG = "v1.522"
 FONT_BASE = f"https://github.com/lxgw/LxgwWenKai/releases/download/{FONT_TAG}"
@@ -76,12 +77,26 @@ def copy_fonts_to_project(root, project):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workspace-root", type=Path, help="Remember the chosen video save directory; shared library lives in _shared")
     parser.add_argument("--shared-root", type=Path)
     parser.add_argument("--install-fonts", action="store_true")
     parser.add_argument("--project", type=Path, help="Copy installed fonts and loader into this project")
     args = parser.parse_args()
-    root = shared_root(args.shared_root)
+    if args.workspace_root:
+        workspace = args.workspace_root.expanduser().resolve()
+        root = workspace / "_shared"
+        if args.shared_root:
+            raise ValueError("--workspace-root 与 --shared-root 不能同时使用。")
+        override = os.environ.get("MOTION_EXPLAINER_SHARED")
+        if override and Path(override).expanduser().resolve() != root:
+            raise ValueError("MOTION_EXPLAINER_SHARED 与所选目录的 _shared 不一致，请先调整或清除该环境变量。")
+    else:
+        root = shared_root(args.shared_root)
+        if not (args.shared_root or os.environ.get("MOTION_EXPLAINER_SHARED") or workspace_root() or config_path(root).is_file()):
+            raise ValueError("请先选择成品保存目录，再运行 setup.py --workspace-root \"<用户选择的目录>\" --install-fonts；共享库将保存在该目录的 _shared 中。")
     created = initialize(root)
+    if args.workspace_root:
+        save_workspace(workspace)
     status = public_status(root)
     status["created_empty_tts_config"] = created
     status["purpose"] = {"skill": "制作规则、脚本和可复用镜头", "shared_library": "跨项目保存个人配音配置、发音规则和字体；更新 Skill 时保留"}

@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+import tempfile
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
 MODEL = "doubao-seed-tts-2-0"
@@ -13,9 +14,45 @@ KEY_URL = "https://console.volcengine.com/speech/new/setting/apikeys?projectName
 VOICE_URL = "https://www.volcengine.com/docs/6561/1257544"
 
 
+def locations_path():
+    return Path.home() / ".motion-explainer-studio" / "locations.json"
+
+
+def workspace_root():
+    path = locations_path()
+    if not path.exists():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+        value = data.get("workspace_root") if isinstance(data, dict) else None
+        if not isinstance(value, str) or not value.strip() or not Path(value).is_absolute():
+            raise ValueError
+    except (ValueError, UnicodeError):
+        raise ValueError(f"保存目录记录无效，请检查：{path}") from None
+    return Path(value).resolve()
+
+
+def save_workspace(root):
+    path = locations_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    # Write only a directory pointer here; credentials stay in the chosen shared library.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                     prefix="locations-", suffix=".tmp", delete=False) as handle:
+        temporary = Path(handle.name)
+        json.dump({"workspace_root": str(root.expanduser().resolve())}, handle, ensure_ascii=False, indent=2)
+        handle.write("\n")
+    try:
+        os.replace(temporary, path)
+    finally:
+        temporary.unlink(missing_ok=True)
+
+
 def shared_root(explicit=None):
     value = explicit or os.environ.get("MOTION_EXPLAINER_SHARED")
-    return Path(value).expanduser().resolve() if value else Path.home() / ".motion-explainer-studio" / "shared"
+    if value:
+        return Path(value).expanduser().resolve()
+    workspace = workspace_root()
+    return workspace / "_shared" if workspace else Path.home() / ".motion-explainer-studio" / "shared"
 
 
 def config_path(root):
@@ -77,9 +114,13 @@ def load_config(root, require_credentials=True):
 
 
 def public_status(root):
+    root = root.expanduser().resolve()
     data = load_config(root, require_credentials=False)
+    workspace = workspace_root()
     return {
         "skill_path": str(SKILL_ROOT), "shared_library_path": str(root),
+        "workspace_root": str(workspace) if workspace and root == (workspace / "_shared").resolve() else None,
+        "locations_config_path": str(locations_path()),
         "tts_config_path": str(config_path(root)), "font_path": str(root / "fonts/LxgwWenKai"),
         "model": MODEL, "voice_id_configured": bool(data["voice_id"]),
         "api_key_configured": bool(data["api_key"]),
