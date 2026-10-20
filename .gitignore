@@ -9,6 +9,7 @@ venv/
 config/tts.json
 **/config/tts.json
 .motion-explainer-studio/
+.aria-animator/
 
 # Generated checks, caches and builds
 qc/

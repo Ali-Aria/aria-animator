@@ -1,9 +1,9 @@
 ---
-name: motion-explainer-studio
-description: 使用 Remotion 制作或修改可编辑的 2D 动画讲解视频，默认落实 process 节奏、主体动作、跨段跟随镜头和截图进出场。适用于技术机制、软件操作、产品流程，以及画面像 PPT、镜头死板、动效不足的修订，包含配音、字幕、音效和导出。
+name: aria-animator
+description: 阿梨动画机（Aria Animator），使用 Remotion 制作或修改可编辑的 2D 动画讲解视频，默认落实 process 节奏、主体动作、跨段跟随镜头和截图进出场。适用于技术机制、软件操作、产品流程，以及画面像 PPT、镜头死板、动效不足的修订，包含配音、字幕、音效和导出。
 ---
 
-# 动态图解工坊
+# 阿梨动画机
 
 ## 首次安装与使用
 

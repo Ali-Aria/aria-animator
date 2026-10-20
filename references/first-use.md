@@ -6,7 +6,7 @@
 
 本 Skill 文档中的 `python` 均指这一步确认的命令。只有 `python3` 时替换为 `python3`，使用 Windows 启动器时替换为 `py -3`。初始化、配音和检查沿用同一解释器，避免混用虚拟环境。自定义可执行文件路径含空格时，按当前 shell 引用；PowerShell 调用带引号的路径时，在前面加 `&`。
 
-镜头库的 `npm run render:previews` 和 `npm run validate:shots` 会自动检测上述命令并检查版本。需要指定解释器时，将环境变量 `MOTION_EXPLAINER_PYTHON` 设为可执行文件路径；变量值不加额外引号或命令参数，不能填成 `py -3`。显式配置无效时会报错，不切换到其他环境。直接运行 Python 脚本时，仍使用已确认的解释器命令。
+镜头库的 `npm run render:previews` 和 `npm run validate:shots` 会自动检测上述命令并检查版本。需要指定解释器时，将环境变量 `ARIA_ANIMATOR_PYTHON` 设为可执行文件路径，兼容旧版 `MOTION_EXPLAINER_PYTHON`；两者都设置时使用新名称。变量值不加额外引号或命令参数，不能填成 `py -3`。显式配置无效时会报错，不切换到其他环境。直接运行 Python 脚本时，仍使用已确认的解释器命令。
 
 ## 引导选择成品保存目录
 
@@ -24,7 +24,7 @@
 
 可按用户的系统给出一个具体建议路径，但等待用户选择后再初始化。不要未经选择就在用户主目录创建共享库。用户已在本次会话给出位置，或本机已保存同一选择时，直接复用，不重复询问。用户只安装、暂不选择时，报告“Skill 文件已安装，保存目录待选择”，不下载字体、不创建共享配置。
 
-复用时检查用户主目录下 `.motion-explainer-studio/locations.json` 的目录记录，以及已设置的 `MOTION_EXPLAINER_SHARED`。旧版共享库可能位于 `.motion-explainer-studio/shared`，另有自定义位置时沿用已知记录，不搜索其他项目的凭证。旧布局要调整为并列结构时，先说明现有位置并让用户选择保留或迁移；不自动搬动、删除或另建一套空配置。
+复用时检查用户主目录下 `.aria-animator/locations.json` 的目录记录；新记录不存在时，复用旧版 `.motion-explainer-studio/locations.json`。检查已设置的 `ARIA_ANIMATOR_SHARED`，兼容旧版 `MOTION_EXPLAINER_SHARED`。旧版共享库可能位于 `.motion-explainer-studio/shared`，另有自定义位置时沿用已知记录，不搜索其他项目的凭证。旧布局要调整为并列结构时，先说明现有位置并让用户选择保留或迁移；不自动搬动、删除或另建一套空配置。
 
 ## 初始化并展示实际位置
 
@@ -36,7 +36,7 @@ python "<skill目录>/scripts/setup.py" --workspace-root "<用户选择的成品
 
 Python 需要 3.10 或以上版本。初始化和配音脚本只使用标准库。初始化只创建 `_shared` 及目录记录，不创建视频项目，不调用配音服务，也不覆盖已有配音配置。
 
-脚本把保存目录记录到用户主目录下的 `.motion-explainer-studio/locations.json`，其中只有目录路径。API Key 留在用户所选目录的 `_shared/config/tts.json` 中。后续初始化和配音脚本自动沿用记录中的 `_shared`；项目素材和音效仍按本片项目目录归档。
+新安装把保存目录记录到用户主目录下的 `.aria-animator/locations.json`，其中只有目录路径。已有旧版记录且尚无新记录时，继续读写旧文件，实际位置以脚本输出为准。API Key 留在用户所选目录的 `_shared/config/tts.json` 中。后续初始化和配音脚本自动沿用记录中的 `_shared`；项目素材和音效仍按本片项目目录归档。
 
 将脚本返回的真实绝对路径整理成简短说明，明确展示：
 
@@ -51,7 +51,7 @@ Python 需要 3.10 或以上版本。初始化和配音脚本只使用标准库�
 
 完整绝对路径须以可见文本展示，可同时附可点击链接。不要只显示“共享库”等链接标题，让用户无法直接看到实际位置。未创建的目录标为计划位置。
 
-`--shared-root` 和 `MOTION_EXPLAINER_SHARED` 保留用于兼容已有独立共享库，优先于已保存的目录记录。首次采用并列结构时使用 `--workspace-root`，不同时传入 `--shared-root`；环境变量指向其他位置时先处理冲突。切换目录不会迁移旧配置，迁移需求须单独处理。
+`--shared-root` 和共享库环境变量用于已有独立共享库，优先于已保存的目录记录。环境变量优先读取 `ARIA_ANIMATOR_SHARED`，未设置时读取旧版 `MOTION_EXPLAINER_SHARED`。首次采用并列结构时使用 `--workspace-root`，不同时传入 `--shared-root`；生效的环境变量指向其他位置时先处理冲突。切换目录不会迁移旧配置，迁移需求须单独处理。
 
 ## 引导填写配音配置
 

@@ -38,7 +38,7 @@ test('Windows launcher receives -3 and returns the actual executable', () => {
 
 test('explicit executable with spaces is passed as one command', () => {
   const executable = '/home/user/Python Env/bin/python';
-  assert.equal(resolvePython({env: {MOTION_EXPLAINER_PYTHON: executable}, run: (command, args) => {
+  assert.equal(resolvePython({env: {ARIA_ANIMATOR_PYTHON: executable}, run: (command, args) => {
     assert.equal(command, executable);
     assert.equal(args[0], '-c');
     return ok(executable);
@@ -47,14 +47,22 @@ test('explicit executable with spaces is passed as one command', () => {
 
 test('invalid explicit configuration fails without choosing another environment', () => {
   let calls = 0;
-  assert.throws(() => resolvePython({env: {MOTION_EXPLAINER_PYTHON: '/missing/python'}, run: () => {
+  assert.throws(() => resolvePython({env: {ARIA_ANIMATOR_PYTHON: '/missing/python'}, run: () => {
     calls++; return missing;
-  }}), /MOTION_EXPLAINER_PYTHON/);
+  }}), /ARIA_ANIMATOR_PYTHON/);
   assert.equal(calls, 1);
 });
 
 test('missing interpreters produce an actionable error', () => {
   assert.throws(() => resolvePython({env: {}, platform: 'linux', run: () => missing}), /Python 3.10\+ not found/);
+});
+
+test('legacy Python override remains supported and new name takes precedence', () => {
+  const legacy = '/legacy/python';
+  const current = '/current/python';
+  assert.equal(resolvePython({env: {MOTION_EXPLAINER_PYTHON: legacy}, run: (command) => ok(command)}), legacy);
+  assert.equal(resolvePython({env: {ARIA_ANIMATOR_PYTHON: current, MOTION_EXPLAINER_PYTHON: legacy}, run: (command) => ok(command)}), current);
+  assert.throws(() => resolvePython({env: {ARIA_ANIMATOR_PYTHON: current, MOTION_EXPLAINER_PYTHON: legacy}, run: () => missing}), /ARIA_ANIMATOR_PYTHON/);
 });
 
 test('real CLI preserves argument boundaries and Python exit status', (t) => {
@@ -65,7 +73,7 @@ test('real CLI preserves argument boundaries and Python exit status', (t) => {
   fs.writeFileSync(script, 'import json, sys\nprint(json.dumps(sys.argv[1:]))\nsys.exit(7)\n');
   const args = ['path with spaces', '中文', '$(literal)', 'a;b'];
   const result = spawnSync(process.execPath, [path.resolve(__dirname, '../scripts/run-python.cjs'), script, ...args], {
-    env: {...process.env, MOTION_EXPLAINER_PYTHON: python}, encoding: 'utf8', shell: false,
+    env: {...process.env, ARIA_ANIMATOR_PYTHON: python}, encoding: 'utf8', shell: false,
   });
   assert.equal(result.status, 7, result.stderr);
   assert.deepEqual(JSON.parse(result.stdout), args);

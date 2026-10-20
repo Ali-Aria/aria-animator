@@ -1,6 +1,6 @@
 # AI Agent 使用指南
 
-本仓库发布“动态图解工坊”，Skill 标识为 `motion-explainer-studio`。先按用户任务选择执行范围：
+本仓库发布“阿梨动画机”（Aria Animator），Skill 标识为 `aria-animator`。先按用户任务选择执行范围：
 
 | 用户任务 | 执行范围 |
 | --- | --- |
@@ -14,18 +14,18 @@
 
 读取当前 AI 宿主的配置、已有 Skill 目录或官方安装说明，确定它实际支持的目录和作用范围。用户指定项目内安装时使用项目目录，否则优先使用宿主的用户级 Skill 目录。不要假定所有宿主都使用 `~/.codex/skills`。
 
-优先使用宿主提供的 Skill 安装工具。需要手动安装时，将完整仓库安装到该目录下的 `motion-explainer-studio` 文件夹，使 `SKILL.md` 位于此文件夹根部。若无法确定宿主或目录，只询问这项缺失信息。
+优先使用宿主提供的 Skill 安装工具。需要手动安装时，将完整仓库安装到该目录下的 `aria-animator` 文件夹，使 `SKILL.md` 位于此文件夹根部。若无法确定宿主或目录，只询问这项缺失信息。
 
 ### 2. 获取完整仓库
 
 使用用户提供的本仓库 GitHub 链接。用户指定分支、标签或提交时遵循该版本；否则使用远端默认分支。README 中的上游来源链接用于署名，不能代替用户指定的安装来源。
 
-当前发布仓库为 [Ali-Aria/motion-explainer-studio](https://github.com/Ali-Aria/motion-explainer-studio)。
+当前发布仓库为 [Ali-Aria/aria-animator](https://github.com/Ali-Aria/aria-animator)。
 
 手动安装且目标目录不存在时，可执行以下命令。先把占位符替换为实际值，并按当前 shell 正确引用路径：
 
 ```text
-git clone "<用户提供的本仓库 GitHub URL>" "<宿主实际 skills 目录>/motion-explainer-studio"
+git clone "<用户提供的本仓库 GitHub URL>" "<宿主实际 skills 目录>/aria-animator"
 ```
 
 没有 Git 时，可下载所选版本的完整源码归档并解压到相同位置。保留目录结构，包括 `references/`、`scripts/`、`agents/` 和 `assets/`。不要只下载 `SKILL.md`。
@@ -65,7 +65,7 @@ python "<实际 Skill 安装目录>/scripts/setup.py" --workspace-root "<用户�
 
 ### 4. 验证并报告结果
 
-检查根部 `SKILL.md` 的 `name` 为 `motion-explainer-studio`，并确认以下资源存在：
+检查根部 `SKILL.md` 的 `name` 为 `aria-animator`，并确认以下资源存在：
 
 - `scripts/setup.py`、`scripts/shared_config.py` 和 `scripts/synthesize_doubao.py`。
 - `references/first-use.md`、`references/shared-dependencies.md` 和 `references/review-checkpoints.md`。
@@ -79,7 +79,7 @@ python "<实际 Skill 安装目录>/scripts/setup.py" --workspace-root "<用户�
 如宿主需要重新加载或新开会话才能发现 Skill，按其实际机制提示用户。给出调用示例：
 
 ```text
-使用 motion-explainer-studio（动态图解工坊），根据这些材料帮我做个视频。
+使用 aria-animator（阿梨动画机），根据这些材料帮我做个视频。
 ```
 
 告诉用户可以提供主题、文本或图片材料，有其他偏好时再补充。配音、字体和制作流程由 Skill 默认规则决定，无需用户在调用提示词中逐项指定。后续制作遵循 [确认节点](references/review-checkpoints.md)。用户明确授权跳过某项确认时，按授权范围继续。

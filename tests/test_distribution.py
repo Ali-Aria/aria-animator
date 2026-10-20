@@ -73,7 +73,7 @@ class DistributionTests(unittest.TestCase):
                 config.load_config(self.root)
 
     def test_custom_shared_path(self):
-        with patch.dict("os.environ", {"MOTION_EXPLAINER_SHARED": str(self.root)}):
+        with patch.dict("os.environ", {"ARIA_ANIMATOR_SHARED": str(self.root)}):
             self.assertEqual(config.shared_root(), self.root.resolve())
             explicit = self.root / "override"
             self.assertEqual(config.shared_root(explicit), explicit.resolve())
@@ -99,6 +99,35 @@ class DistributionTests(unittest.TestCase):
                 setup.main()
             download.assert_not_called()
         self.assertFalse((Path.home() / ".motion-explainer-studio").exists())
+        self.assertFalse((Path.home() / ".aria-animator").exists())
+
+    def test_renamed_environment_variable_takes_precedence_and_keeps_legacy_alias(self):
+        new = self.root / "new"
+        with patch.dict("os.environ", {"ARIA_ANIMATOR_SHARED": str(new), "MOTION_EXPLAINER_SHARED": str(self.root)}):
+            self.assertEqual(config.shared_root(), new.resolve())
+            self.assertEqual(config.shared_root(self.root), self.root.resolve())
+        with patch.dict("os.environ", {"MOTION_EXPLAINER_SHARED": str(self.root)}):
+            self.assertEqual(config.shared_root(), self.root.resolve())
+
+    def test_legacy_location_record_is_reused_without_copying_configuration(self):
+        legacy = Path.home() / ".motion-explainer-studio/locations.json"
+        legacy.parent.mkdir(parents=True)
+        workspace = (Path(self.temp.name) / "existing videos").resolve()
+        legacy.write_text(json.dumps({"workspace_root": str(workspace)}), encoding="utf-8")
+        root = workspace / "_shared"
+        config.initialize(root)
+        before = config.config_path(root).read_bytes()
+        self.assertEqual(config.locations_path(), legacy)
+        self.assertEqual(config.shared_root(), root)
+        config.save_workspace(workspace)
+        self.assertEqual(config.config_path(root).read_bytes(), before)
+        self.assertFalse((Path.home() / ".aria-animator").exists())
+        current = Path.home() / ".aria-animator/locations.json"
+        current.parent.mkdir(parents=True)
+        chosen = (workspace / "new choice").resolve()
+        current.write_text(json.dumps({"workspace_root": str(chosen)}), encoding="utf-8")
+        self.assertEqual(config.locations_path(), current)
+        self.assertEqual(config.shared_root(), chosen / "_shared")
 
     def test_setup_remembers_choice_without_creating_video_projects(self):
         workspace = Path(self.temp.name) / "video output"

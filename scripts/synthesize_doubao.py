@@ -36,7 +36,7 @@ def prepare_text(text, rules_path):
 
 
 def build_request(text, settings):
-    payload = {"user": {"uid": "remotion-explainer"}, "req_params": {
+    payload = {"user": {"uid": "aria-animator"}, "req_params": {
         "text": text, "speaker": settings["voice_id"],
         "audio_params": {"format": "pcm", "sample_rate": settings["sample_rate"],
                          "speech_rate": settings["speech_rate"], "loudness_rate": settings["loudness_rate"],

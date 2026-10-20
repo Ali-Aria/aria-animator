@@ -4,13 +4,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import shutil
 import sys
 import urllib.request
 
-from shared_config import config_path, initialize, public_status, save_workspace, shared_root, workspace_root, SKILL_ROOT
+from shared_config import config_path, initialize, public_status, save_workspace, shared_override, shared_root, workspace_root, SKILL_ROOT
 
 FONT_TAG = "v1.522"
 FONT_BASE = f"https://github.com/lxgw/LxgwWenKai/releases/download/{FONT_TAG}"
@@ -22,7 +21,7 @@ LICENSE_URL = f"https://raw.githubusercontent.com/lxgw/LxgwWenKai/{FONT_TAG}/OFL
 
 
 def download(url):
-    request = urllib.request.Request(url, headers={"User-Agent": "motion-explainer-studio-setup"})
+    request = urllib.request.Request(url, headers={"User-Agent": "aria-animator-setup"})
     with urllib.request.urlopen(request, timeout=60) as response:
         return response.read()
 
@@ -87,12 +86,12 @@ def main():
         root = workspace / "_shared"
         if args.shared_root:
             raise ValueError("--workspace-root 与 --shared-root 不能同时使用。")
-        override = os.environ.get("MOTION_EXPLAINER_SHARED")
+        override = shared_override()
         if override and Path(override).expanduser().resolve() != root:
-            raise ValueError("MOTION_EXPLAINER_SHARED 与所选目录的 _shared 不一致，请先调整或清除该环境变量。")
+            raise ValueError("共享库环境变量（ARIA_ANIMATOR_SHARED 或旧版 MOTION_EXPLAINER_SHARED）与所选目录的 _shared 不一致，请先调整或清除该环境变量。")
     else:
         root = shared_root(args.shared_root)
-        if not (args.shared_root or os.environ.get("MOTION_EXPLAINER_SHARED") or workspace_root() or config_path(root).is_file()):
+        if not (args.shared_root or shared_override() or workspace_root() or config_path(root).is_file()):
             raise ValueError("请先选择成品保存目录，再运行 setup.py --workspace-root \"<用户选择的目录>\" --install-fonts；共享库将保存在该目录的 _shared 中。")
     created = initialize(root)
     if args.workspace_root:

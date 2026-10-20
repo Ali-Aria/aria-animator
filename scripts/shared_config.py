@@ -15,7 +15,13 @@ VOICE_URL = "https://www.volcengine.com/docs/6561/1257544"
 
 
 def locations_path():
-    return Path.home() / ".motion-explainer-studio" / "locations.json"
+    current = Path.home() / ".aria-animator" / "locations.json"
+    legacy = Path.home() / ".motion-explainer-studio" / "locations.json"
+    return legacy if not current.exists() and legacy.exists() else current
+
+
+def shared_override():
+    return os.environ.get("ARIA_ANIMATOR_SHARED") or os.environ.get("MOTION_EXPLAINER_SHARED")
 
 
 def workspace_root():
@@ -48,11 +54,15 @@ def save_workspace(root):
 
 
 def shared_root(explicit=None):
-    value = explicit or os.environ.get("MOTION_EXPLAINER_SHARED")
+    value = explicit or shared_override()
     if value:
         return Path(value).expanduser().resolve()
     workspace = workspace_root()
-    return workspace / "_shared" if workspace else Path.home() / ".motion-explainer-studio" / "shared"
+    if workspace:
+        return workspace / "_shared"
+    current = Path.home() / ".aria-animator" / "shared"
+    legacy = Path.home() / ".motion-explainer-studio" / "shared"
+    return legacy if not config_path(current).is_file() and config_path(legacy).is_file() else current
 
 
 def config_path(root):

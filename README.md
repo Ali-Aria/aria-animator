@@ -1,6 +1,6 @@
-# 动态图解工坊
+# 阿梨动画机
 
-`motion-explainer-studio` 是一个动画讲解制作 Skill。它把主题、资料或定稿制作成可编辑的视频，涵盖口播写作、配音、画面编排、音效和导出。
+阿梨动画机（Aria Animator，Skill 标识 `aria-animator`）是一个动画讲解制作 Skill。它把主题、资料或定稿制作成可编辑的视频，涵盖口播写作、配音、画面编排、音效和导出。
 
 默认使用 React 与 Remotion 制作白底 2D 动画，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
 
@@ -39,8 +39,8 @@
 把本仓库的 GitHub 链接发给支持本地命令和 Skill 的 AI 助手，可以这样说：
 
 ```text
-请从这个仓库安装 motion-explainer-studio（动态图解工坊）：
-https://github.com/Ali-Aria/motion-explainer-studio
+请从这个仓库安装 aria-animator（阿梨动画机）：
+https://github.com/Ali-Aria/aria-animator
 先阅读仓库根目录的 AGENTS.md，按我的 AI 宿主完成安装和首次配置引导。
 先说明共享库与各视频文件夹的用途，再引导我选择成品保存目录。
 共享库放在所选目录的 _shared 中，与各视频文件夹并列。
@@ -51,7 +51,7 @@ https://github.com/Ali-Aria/motion-explainer-studio
 
 ### 手动安装
 
-将完整的 `motion-explainer-studio` 文件夹放到 AI 助手支持的 skills 目录。先按 [Python 命令识别](references/first-use.md#识别-python-命令) 确认可用的 Python 3.10 或以上版本。
+将完整的 `aria-animator` 文件夹放到 AI 助手支持的 skills 目录。先按 [Python 命令识别](references/first-use.md#识别-python-命令) 确认可用的 Python 3.10 或以上版本。
 
 先选择一个成品保存目录。共享库和每个视频文件夹都放在其中，各自保存以下内容：
 
@@ -69,9 +69,9 @@ https://github.com/Ali-Aria/motion-explainer-studio
 python scripts/setup.py --workspace-root "<你选择的成品保存目录>" --install-fonts
 ```
 
-脚本会在所选目录创建 `_shared`，并展示各位置的绝对路径。保存目录记录在用户主目录下的 `.motion-explainer-studio/locations.json`，其中只有路径，后续调用自动复用。安装阶段不创建具体视频项目。暂不选择目录时，可以先完成 Skill 文件安装，待首次制作前再配置。
+脚本会在所选目录创建 `_shared`，并展示各位置的绝对路径。保存目录记录在用户主目录下的 `.aria-animator/locations.json`，其中只有路径，后续调用自动复用。安装阶段不创建具体视频项目。暂不选择目录时，可以先完成 Skill 文件安装，待首次制作前再配置。
 
-旧版共享库可能位于用户主目录下的 `.motion-explainer-studio/shared`，或由 `MOTION_EXPLAINER_SHARED`、`--shared-root` 指定。已有配置先复用；需要调整为并列结构时，先核对迁移方式，脚本不会自动搬迁。详细步骤见 [首次使用引导](references/first-use.md)。
+已有 `.motion-explainer-studio/locations.json` 时自动复用旧记录，不另建一份。旧版独立共享库可能位于用户主目录下的 `.motion-explainer-studio/shared`。共享库环境变量使用 `ARIA_ANIMATOR_SHARED`，兼容旧版 `MOTION_EXPLAINER_SHARED`，也可用 `--shared-root` 显式指定。已有配置先复用；需要调整为并列结构时，先核对迁移方式，脚本不会自动搬迁。详细步骤见 [首次使用引导](references/first-use.md)。
 
 ### 填写豆包配音配置
 
@@ -122,7 +122,7 @@ python scripts/setup.py --project "<项目目录>"
 引用 Skill，提供主题、文本或图片材料，再说“帮我做视频”即可。例如：
 
 ```text
-使用 motion-explainer-studio（动态图解工坊），根据这些材料帮我做个视频。
+使用 aria-animator（阿梨动画机），根据这些材料帮我做个视频。
 ```
 
 也可以只给一个主题，例如“帮我做个解释 DNS 原理的视频”。已有定稿或音频时直接附上；有时长、画幅或风格偏好时再补充。
@@ -156,6 +156,6 @@ AI 会按 Skill 的默认流程写口播、使用已配置的配音和字体，�
 
 本 Skill 基于 [vibe-motion/remotion-code-motion-explainer](https://github.com/vibe-motion/remotion-code-motion-explainer) 修改。原项目由 [Bingo](https://github.com/DWCD-Bingo) 创建。
 
-动态图解工坊增加了首次使用引导、独立共享配置、豆包语音合成 2.0 接入、霞鹜文楷加载和内置中文口播写作。制作规则包含口播与画面的信息分工、统一字重与轮廓线宽，以及口播、预览两次确认和检查记录。
+阿梨动画机增加了首次使用引导、独立共享配置、豆包语音合成 2.0 接入、霞鹜文楷加载和内置中文口播写作。制作规则包含口播与画面的信息分工、统一字重与轮廓线宽，以及口播、预览两次确认和检查记录。
 
 原项目采用 [MIT 许可证](LICENSE)。镜头库来源见 [SOURCES.md](assets/shot-library/SOURCES.md)。霞鹜文楷使用 SIL Open Font License（OFL）1.1，下载和复制字体时一并保留许可证。随附 Three.js 源码保留其 MIT 许可证。
