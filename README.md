@@ -1,8 +1,26 @@
-# 阿梨动画机
+<h1 align="center">阿梨动画机</h1>
+
+<p align="center"><strong>把主题、资料或定稿，制作成可编辑的白底 2D 动画讲解视频。</strong></p>
+
+<p align="center">
+  <a href="SKILL.md"><img src="https://img.shields.io/badge/Skill-aria--animator-3B5CCC?style=flat-square" alt="Skill: aria-animator"></a>
+  <a href="https://github.com/Ali-Aria/aria-animator/stargazers"><img src="https://img.shields.io/github/stars/Ali-Aria/aria-animator?style=flat-square&amp;label=Stars&amp;color=E58B2A" alt="GitHub Stars"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2E9B57?style=flat-square" alt="License: MIT"></a>
+  <a href="references/shared-dependencies.md"><img src="https://img.shields.io/badge/React-2D-149ECA?style=flat-square&amp;logo=react&amp;logoColor=white" alt="React: 2D"></a>
+  <a href="references/shared-dependencies.md"><img src="https://img.shields.io/badge/Video-Remotion-5B5BD6?style=flat-square" alt="Video: Remotion"></a>
+</p>
 
 阿梨动画机（Aria Animator，Skill 标识 `aria-animator`）是一个动画讲解制作 Skill。它把主题、资料或定稿制作成可编辑的视频，涵盖口播写作、配音、画面编排、音效和导出。
 
 默认使用 React 与 Remotion 制作白底 2D 动画，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
+
+## 配色预览
+
+用相同的内容与构图，比较青瓷蓝、椰林绿、编辑部红和石墨青四套配色。点击下方封面打开 20 秒预览视频。
+
+[![配色预览：点击观看四套配色的动画效果](assets/readme/palette-preview.jpg)](assets/readme/palette-preview.mp4)
+
+[观看配色预览（MP4）](assets/readme/palette-preview.mp4) · [查看配色规则](references/color-presets.md)
 
 ## 默认制作方式
 
