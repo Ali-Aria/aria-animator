@@ -16,9 +16,9 @@
 
 ## 配色预览
 
-用相同的内容与构图，比较青瓷蓝、椰林绿、编辑部红和石墨青四套配色。点击下方封面打开 20 秒预览视频。
+用相同的内容与构图，比较青瓷蓝、椰林绿、编辑部红和石墨青四套配色。点击下方播放器观看 20 秒预览视频。
 
-[![配色预览：点击观看四套配色的动画效果](assets/readme/palette-preview.jpg)](assets/readme/palette-preview.mp4)
+https://github.com/user-attachments/assets/c422eb5a-d348-43b4-ac0a-2df6ae285913
 
 [观看配色预览（MP4）](assets/readme/palette-preview.mp4) · [查看配色规则](references/color-presets.md)
 
