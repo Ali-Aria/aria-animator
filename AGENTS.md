@@ -91,8 +91,8 @@ python "<实际 Skill 安装目录>/scripts/setup.py" --workspace-root "<用户�
 - 按 [首次使用引导](references/first-use.md) 复用所选成品保存目录，在其中为本片建立独立文件夹，与 `_shared` 并列。尚未选择时先完成目录引导；已有项目复用原位置。制作和交付时展示项目、预览与成片的实际绝对路径。
 - 写稿前阅读 [信息分工](references/information-design.md) 和 [口播写作](references/voiceover-writing.md)。口播讲因果、判断和必要条件，画面承接有依据的可视细节并留出阅读时间。交稿前完成逐句检查。
 - 配音前按 [豆包配音](references/doubao-tts.md) 编排已确认正文的语义分段，通过 `--segments-json` 提交，按需指定段后停顿。脚本默认每段最多 300 个字符，超长自动拆分并拼接；保留分段音频和实测时间。分段不改正文，不逐句添加固定静音。
-- 默认使用白底 2D 与 `process` 节奏。阅读 [process 接入](references/process-production.md)，将参数接到主体变化和镜头任务中，保留跨段接续。
-- 按 [配色规则](references/color-presets.md) 为全片选择一套预设。各配色共用霞鹜文楷真实 Medium 500，次要长说明可用 Regular 400；按 [字体接入](references/fonts.md) 加载本地字体，禁用合成字重。
+- 默认使用极简 2D 与 `process` 节奏，画布采用所选配色预设的纸色（`BG`）。阅读 [process 接入](references/process-production.md)，将参数接到主体变化和镜头任务中，保留跨段接续。
+- 按 [配色规则](references/color-presets.md) 为全片选择一套预设。仅在交付平台或明确制作要求需要时将画布改为纯白，其他语义色沿用预设。各配色共用霞鹜文楷真实 Medium 500，次要长说明可用 Regular 400；按 [字体接入](references/fonts.md) 加载本地字体，禁用合成字重。
 - 按 [视觉设计](references/code-motion-design.md#统一轮廓线宽) 检查轮廓。1080p 落稳画面中，主体默认 8 px、连线 6 px、辅助细节 4 px。检查缩放后的实际粗细，不再叠加旧版 `strokeScale: 1.8`。
 - 按 [制作检查](references/production-and-qc.md) 审阅完整预览，核对阅读时间、真实字体、连续动作和声音。静态检查不能代替播放与听检。
 

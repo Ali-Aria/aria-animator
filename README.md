@@ -1,6 +1,6 @@
 <h1 align="center">阿梨动画机</h1>
 
-<p align="center"><strong>把主题、资料或定稿，制作成可编辑的白底 2D 动画讲解视频。</strong></p>
+<p align="center"><strong>把主题、资料或定稿，制作成可编辑的 2D 动画讲解视频。</strong></p>
 
 <p align="center">
   <a href="SKILL.md"><img src="https://img.shields.io/badge/Skill-aria--animator-3B5CCC?style=flat-square" alt="Skill: aria-animator"></a>
@@ -12,15 +12,17 @@
 
 阿梨动画机（Aria Animator，Skill 标识 `aria-animator`）是一个动画讲解制作 Skill。它把主题、资料或定稿制作成可编辑的视频，涵盖口播写作、配音、画面编排、音效和导出。
 
-默认使用 React 与 Remotion 制作白底 2D 动画，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
+默认使用 React 与 Remotion 制作极简 2D 动画，画布采用所选配色预设的纸色，字体为霞鹜文楷。相关段落共用画布，主体跨段接续，镜头随内容移动。完整制作规则见 [SKILL.md](SKILL.md)。
 
 ## 配色预览
 
-用相同的内容与构图，比较青瓷蓝、椰林绿、编辑部红和石墨青四套配色。点击下方播放器观看 20 秒预览视频。
+青瓷蓝、椰林绿、编辑部红和石墨青四套配色均使用各自的纸色背景。具体色值和语义角色见 [配色规则](references/color-presets.md)。
+
+下方 20 秒视频为旧版白底示例，尚未更新本次纸色背景、强调色和色阶调整。
 
 https://github.com/user-attachments/assets/c422eb5a-d348-43b4-ac0a-2df6ae285913
 
-[观看配色预览（MP4）](assets/readme/palette-preview.mp4) · [查看配色规则](references/color-presets.md)
+[观看旧版配色预览（MP4）](assets/readme/palette-preview.mp4) · [查看配色规则](references/color-presets.md)
 
 ## 默认制作方式
 
@@ -29,7 +31,7 @@ https://github.com/user-attachments/assets/c422eb5a-d348-43b4-ac0a-2df6ae285913
 | 项目 | 默认规则 |
 | --- | --- |
 | 动作与镜头 | 使用 `process` 节奏，主体错峰响应，结果接入下一步。镜头按传递关系和关注点跟随，证据落稳后保持可读。 |
-| 配色 | 全片或同组交付选用青瓷蓝、椰林绿、编辑部红或石墨青中的一套。默认画布为白色，真实界面和证据保留必要的原色。 |
+| 配色 | 全片或同组交付选用青瓷蓝、椰林绿、编辑部红或石墨青中的一套。画布默认使用预设的纸色（`BG`），仅按平台或明确制作要求改为纯白。真实界面和证据保留必要的原色。 |
 | 字体 | 标题、标签和字幕使用霞鹜文楷真实 Medium 500；次要长说明可用 Regular 400。加载组件默认禁用合成字重。 |
 | 轮廓 | 以 1080p 落稳画面为基准，主体 8 px、连线 6 px、辅助细节 4 px。检查局部缩放、镜头缩放和预览缩小后的可见粗细。 |
 | 声音 | 使用已配置的豆包配音，或原样使用用户指定的成品配音。按可见事件安排音效，不增加背景音乐或额外旁白。 |

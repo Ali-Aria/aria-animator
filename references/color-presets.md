@@ -5,17 +5,21 @@ Status: `ACTIVE`
 This is the active color specification for the Remotion code-motion-explainer skill. It adapts
 the three Lieflat Charts presets from the canonical [`color-presets.js`](https://github.com/larashero3-dotcom/lieflat-charts/blob/main/color-presets.js)
 source. The preset names, hex values, opacity values, ramps, category arrays, and dark variants
-below are intentional. Do not invent replacement hex values when one of these roles applies.
+below include the authored adjustments recorded in this document and take precedence over upstream
+values. Do not invent replacement hex values when one of these roles applies.
 
 The legacy Morandi snapshot is stored separately in `references/morandi-legacy.md`. It is archived
 and must not be loaded or selected for new work.
 
 ## Theme contract
 
-The user-selected default style is white-background minimal 2D. For this style, set `canvas`
-to `#FFFFFF`; this is an authorized background override to the BG mapping below. Preserve the
-selected preset's existing ink, data, accent and semantic roles. It does not authorize a new
-custom data palette. Explicit production-specific palette or background requests take priority.
+The default style is minimal 2D on the selected preset's own tinted paper (`BG`). Each preset's
+tint is part of its character — porcelain's warm cream, graphite's cool paper — so `canvas`
+defaults to the preset `BG`, not pure white. Set `canvas` to `#FFFFFF` only when the delivery
+platform or an explicit production request requires it. Either way, preserve the selected
+preset's existing ink, data, accent and semantic roles; a background choice never authorizes a
+new custom data palette. Explicit production-specific palette or background requests take
+priority.
 
 
 Choose one preset for the complete video or one group of sibling compositions. Keep the existing
@@ -141,11 +145,16 @@ CAT3      #334EAC / #7096D1 / #BAD6EB
 HEAT      #334EAC / #7096D1 / #BAD6EB
 SER       #334EAC / #081F5C / #7096D1 / #BAD6EB / #D0E3FF /
           rgba(51,78,172,.4)
-RAMP      #D0E3FF / #BAD6EB / #7096D1 / #334EAC / #081F5C
+RAMP      #BAD6EB / #7096D1 / #334EAC / #081F5C
 DRAMP4    #D0E3FF / #BAD6EB / rgba(247,242,235,.26)
 RAMPDK    rgba(247,242,235,.26) / rgba(247,242,235,.42) /
           rgba(247,242,235,.60) / rgba(247,242,235,.84) / #7096D1
 ```
+
+`RAMP` is intentionally four steps: `#D0E3FF` is only 1.16:1 away from `#BAD6EB`, so it stays
+in `SER` as a minor series tone and never acts as a ramp level. For two-sided comparisons
+(before/after, us/them) do not invent a warm hue: run the focal series in the blue ladder and
+the reference side in the `TXT` ink family, separated by label, position, or geometry.
 
 Dark variant:
 
@@ -179,7 +188,7 @@ TRACK     rgba(88,64,46,.12)
 GRID      rgba(88,64,46,.16)
 DATA      #43593B
 DATA2     #58402E
-HERO      #D4A017
+HERO      #B07D0F
 HERODK    #F2D17E
 FAINTDATA #ACAD79
 BEAD      #77835A
@@ -189,11 +198,9 @@ CAT4      #43593B / #77835A / #ACAD79 / #F2D17E
 CAT3      #43593B / #929960 / #F2D17E
 CAT3L     #43593B / #77835A / #ACAD79
 HEAT      #43593B / #929960 / #F2D17E
-SER       #43593B / #D4A017 / #77835A / #F2D17E /
+SER       #43593B / #77835A / #F2D17E /
           #ACAD79 / #58402E
-RAMP6     #43593B / #5A7049 / #77835A / #929960 /
-          #ACAD79 / #F2D17E
-RAMP      #F2D17E / #ACAD79 / #929960 / #77835A / #43593B
+RAMP      #E5D89A / #ACAD79 / #77835A / #43593B
 SEG3      #43593B / #77835A / #ACAD79
 ZONE3     #ACAD79 / #929960 / #43593B
 RAMPDK    rgba(240,239,235,.26) / rgba(240,239,235,.42) /
@@ -215,8 +222,14 @@ LINK_SAME #405333       LINK_CROSS #334329
 LINK_HEAVY #4C6340      LINK_FAINT #2C3823
 ```
 
-Do not use `#D4A017` and the olive tones as two equal categories. Their roles are deliberately
-different: amber jumps forward and olive recedes.
+Do not use `#B07D0F` and the olive tones as two equal categories. Their roles are deliberately
+different: amber jumps forward and olive recedes. The amber was deepened from `#D4A017` on
+2026-10-23 because the original value measured only 2.38:1 on white, below the 3:1 boundary
+threshold; `#B07D0F` measures about 3.6:1 and may also carry large text. The old six-step
+`RAMP6` was retired the same day: adjacent olive steps measured 1.30–1.58:1 apart and blur
+together in compressed video, so `RAMP` is now a four-step ladder with wider gaps. `#5A7049`
+and `#929960` remain valid inside dark-card internals and `CAT3`/`HEAT`, where their neighbors
+are far enough away.
 
 ## Wire · 编辑部红
 
@@ -240,7 +253,7 @@ HERO      #F5572F
 HERODK    #F5572F
 FAINTDATA #C0BFB7
 BEAD      #8F8E86
-HALO      rgba(255,255,255,.92)
+HALO      rgba(240,240,238,.92)
 
 CAT4      #F5572F / #22211F / #8F8E86 / #C0BFB7
 CAT3      #F5572F / #22211F / #8F8E86
@@ -254,9 +267,22 @@ RAMPDK    rgba(240,240,238,.26) / rgba(240,240,238,.42) /
           rgba(240,240,238,.60) / rgba(240,240,238,.84) / #F5572F
 ```
 
-Wire has no colored dark-card variant in the source preset. For a dark authored card, use the
-neutral `TXT` family and keep the orange as the single focal state; do not invent a second dark
-gradient or a second accent.
+Dark variant (added 2026-10-23):
+
+```text
+CARDBG    #1F1E1C
+DK8       #ECEBE7 / #D8D7CF / #C9C8C0 / #B3B2AA /
+          #9C9B93 / #85847D / #6E6D66 / #585753
+HL        #ECEBE7
+LABEL     #C9C8C0       SUB        #9C9B93
+SRCROW    #4A4944       RULE       #3A3935
+LINK_SAME #45443F       LINK_CROSS #353431
+LINK_HEAVY #504F4A      LINK_FAINT #2E2D2A
+```
+
+The dark card keeps the same orange `#F5572F` as the single focal state — it measures about
+5.0:1 on `CARDBG`, stronger than on the light background. Do not invent a second dark gradient
+or a second accent.
 
 ## Graphite · 石墨青
 
@@ -278,22 +304,22 @@ TRACK     rgba(21,32,43,.12)
 GRID      rgba(21,32,43,.16)
 DATA      #2B5A7A
 DATA2     #7A8B99
-HERO      #0B7A6E
-HERODK    #3CC4B0
+HERO      #0B8563
+HERODK    #2FC79E
 FAINTDATA #BFD9E0
 BEAD      #7A8B99
 HALO      rgba(244,246,247,.92)
 
-CAT4      #0B7A6E / #2B5A7A / #7A8B99 / #BFD9E0
-CAT3      #0B7A6E / #2B5A7A / #7A8B99
+CAT4      #0B8563 / #2B5A7A / #7A8B99 / #BFD9E0
+CAT3      #0B8563 / #2B5A7A / #7A8B99
 CAT3L     #2B5A7A / #7A8B99 / #BFD9E0
-HEAT      #0B7A6E / #5E7A8C / #BFD9E0
+HEAT      #2B5A7A / #7A9DB5 / #BFD9E0
 SER       #2B5A7A / #15202B / #7A8B99 / #BFD9E0 / #C9DDE4 /
           rgba(43,90,122,.4)
 RAMP      #DCE7EC / #BFD9E0 / #7A8B99 / #2B5A7A / #15202B
 DRAMP4    #BFD9E0 / #7A8B99 / rgba(244,246,247,.26)
 RAMPDK    rgba(244,246,247,.26) / rgba(244,246,247,.42) /
-          rgba(244,246,247,.60) / rgba(244,246,247,.84) / #3CC4B0
+          rgba(244,246,247,.60) / rgba(244,246,247,.84) / #2FC79E
 ```
 
 Dark variant:
@@ -309,12 +335,19 @@ LINK_SAME #2E4A5C       LINK_CROSS #263D4D
 LINK_HEAVY #36607A      LINK_FAINT #1F3340
 ```
 
-Contrast on the white canvas (`#FFFFFF`), computed by script (WCAG relative luminance): `TXT` about 16.5:1; `DATA` about 7.4:1;
-`HERO` about 5.2:1, so it may carry text; `DATA2` about 3.5:1, so use it for large text and shapes
-only; `FAINTDATA` is for shapes only. On `CARDBG`, `HERODK` is about 7.6:1 and `HL` is about 14.6:1.
+Contrast on white (`#FFFFFF`), computed by script (WCAG relative luminance): `TXT` about
+16.5:1; `DATA` about 7.4:1; `HERO` `#0B8563` about 4.6:1; `DATA2` about 3.5:1.
+On the default preset paper (`#F4F6F7`), `HERO` is about 4.26:1, below the 4.5:1 body-text
+threshold, so use it for large text and shapes and use `ink` for body text. `DATA2` is for large
+text and shapes only; `FAINTDATA` is for shapes only. On `CARDBG`, `HERODK` is about 7.7:1
+and `HL` is about 14.6:1.
 
 Do not place `HERO` and `DATA` as two equal categories. Use `DATA2` and `SER` for peers; reserve
-`HERO` for the single focal element.
+`HERO` for the single focal element. `HERO` was shifted from `#0B7A6E` to the greener `#0B8563`
+on 2026-10-23: the original teal measured only 1.41:1 against `DATA` and read as the same cool
+family in fast motion, and the old `HEAT` mixed teal into the blue-gray ladder, so `HEAT` is now
+a pure `DATA` lightness ramp and teal hues belong to `HERO` alone. Keep `HERO` and `DATA` from
+touching as adjacent same-size fills in one beat; separate them with ink outlines or spacing.
 
 ## Selection and fallback
 
